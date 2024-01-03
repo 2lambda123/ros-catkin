@@ -1,18 +1,21 @@
 # the CMake variable PYTHON_INSTALL_DIR has the same value as the Python function catkin.builder.get_python_install_dir()
 
 set(PYTHON_VERSION "" CACHE STRING "Specify specific Python version to use ('major.minor' or 'major')")
+if(NOT PYTHON_VERSION)
+  set(PYTHON_VERSION 3)
+endif()
 if(PYTHON_VERSION)
   set(PythonInterp_FIND_VERSION "${PYTHON_VERSION}")
 endif()
 
-find_package(PythonInterp REQUIRED)
+find_package(PythonInterp ${PYTHON_VERSION} REQUIRED)
 message(STATUS "Using PYTHON_EXECUTABLE: ${PYTHON_EXECUTABLE}")
 
 set(_PYTHON_PATH_VERSION_SUFFIX "${PYTHON_VERSION_MAJOR}.${PYTHON_VERSION_MINOR}")
 
 set(enable_setuptools_deb_layout OFF)
 if(EXISTS "/etc/debian_version")
-  set(enable_setuptools_deb_layout ON)
+  #set(enable_setuptools_deb_layout ON)
 endif()
 option(SETUPTOOLS_DEB_LAYOUT "Enable debian style python package layout" ${enable_setuptools_deb_layout})
 
